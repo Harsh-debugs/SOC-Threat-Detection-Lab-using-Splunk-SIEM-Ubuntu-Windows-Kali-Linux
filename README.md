@@ -36,7 +36,7 @@ shared NAT network (`192.168.56.0/24`):
 | VM 2 | Windows 11 — Victim Machine | Universal Forwarder + Sysmon installed; generates Security & Sysmon logs |
 | VM 3 | Kali Linux — Attacker Machine | Nmap reconnaissance, Hydra brute-force attempts |
 
-![Lab Architecture](screenshots/Lab- architecture.png)
+[Lab Architecture](screenshots/Lab-%20architecture.png)
 
 ---
 
