@@ -36,7 +36,7 @@ shared NAT network (`192.168.56.0/24`):
 | VM 2 | Windows 11 — Victim Machine | Universal Forwarder + Sysmon installed; generates Security & Sysmon logs |
 | VM 3 | Kali Linux — Attacker Machine | Nmap reconnaissance, Hydra brute-force attempts |
 
-![Lab Architecture](screenshots/lab-network-architecture.png)
+![Lab Architecture](screenshots/Lab- architecture.png)
 
 ---
 
@@ -92,7 +92,7 @@ A single **SOC Threat Detection Dashboard** was built in Splunk, consolidating:
 - Top Executed Processes (bar chart)
 - Recent Failed Logons (table)
 
-![SOC Dashboard](screenshots/dashboard.png)
+![SOC Dashboard](screenshots/Splunk Dashboard.png)
 
 Full dashboard source: [`splunk/dashboard-source.xml`](splunk/dashboard-source.xml)
 
@@ -141,15 +141,7 @@ soc-threat-detection-splunk/
 ├── sysmon/
 │   └── sysmonconfig.xml
 └── screenshots/
-    ├── lab-network-architecture.png
-    ├── dashboard.png
-    ├── failed-logons.png
-    ├── successful-logons.png
-    ├── process-creation.png
-    ├── dns-queries.png
-    ├── nmap-output.png
-    ├── hydra-output.png
-    └── triggered-alerts.png
+    └── (dashboard, alert, and attack tool screenshots)
 ```
 
 ---
