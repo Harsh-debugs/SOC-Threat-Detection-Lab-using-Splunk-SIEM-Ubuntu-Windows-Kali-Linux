@@ -1,0 +1,121 @@
+<!--
+  SOC Threat Detection Dashboard — Splunk Dashboard Source (Simple XML)
+  ----------------------------------------------------------------------
+  Exported from: Splunk Enterprise > Dashboards > SOC Threat Detection Dashboard > Edit Source
+  Purpose: Consolidated monitoring view for Windows Security Log and Sysmon
+  Operational Log events collected from the monitored Windows 11 endpoint.
+
+  Panels:
+    1. Total Process Creation Events (Sysmon Event ID 1) — count
+    2. Failed Logons (Event ID 4625) — count
+    3. Successful Logons (Event ID 4624) — count
+    4. DNS Queries (Sysmon Event ID 22) — count
+    5. Top Executed Processes — bar chart (top 10, excludes Splunk forwarder)
+    6. Recent Failed Logons — table (time, account, failure reason, source IP, host)
+
+  To reuse: import this file directly in Splunk via
+  Settings > User Interface > Views > New View > (paste this XML), or
+  Dashboards > Create New Dashboard > Source > (paste this XML).
+-->
+<dashboard version="1.1" theme="dark">
+  <label>SOC Threat Detection Dashboard</label>
+  <description>SOC monitoring dashboard for Windows Security and Sysmon events.</description>
+  <row>
+    <panel>
+      <title>Endpoint Activity</title>
+      <single>
+        <title>Total Process Creation Events</title>
+        <search>
+          <query>source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+"EventID&gt;1&lt;/EventID&gt;"
+| stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Authentication Monitoring</title>
+      <single>
+        <title>Failed Logons</title>
+        <search>
+          <query>index=main EventCode=4625
+| stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Authentication Monitoring</title>
+      <single>
+        <title>Successful Logons</title>
+        <search>
+          <query>index=main EventCode=4624
+| stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Network Activity</title>
+      <single>
+        <title>DNS Queries</title>
+        <search>
+          <query>source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+"EventID&gt;22&lt;/EventID&gt;"
+| stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Endpoint Activity</title>
+      <chart>
+        <title>Top Executed Processes</title>
+        <search>
+          <query>source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+"EventID&gt;1&lt;/EventID&gt;"
+| rex field=_raw "&lt;Data Name='Image'&gt;(?&lt;Image&gt;[^&lt;]+)"
+| search NOT Image="*SplunkUniversalForwarder*"
+| top limit=10 Image</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Authentication Monitoring</title>
+      <table>
+        <title>Recent Failed Logons</title>
+        <search>
+          <query>index=main EventCode=4625
+| table _time Account_Name Failure_Reason Source_Network_Address ComputerName
+| sort - _time</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
